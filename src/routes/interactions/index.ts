@@ -9,7 +9,11 @@ import {
   InteractionResponseType,
   InteractionType,
 } from "discord_api_types/v10.ts";
-import { generateBookmarkMessage, setBookmark } from "../../utils.ts";
+import {
+  generateBookmarkMessage,
+  getBookmarks,
+  setBookmark,
+} from "../../utils.ts";
 
 const verifySignature = (
   body: APIInteraction,
@@ -75,12 +79,18 @@ export default {
           } as APIInteractionResponse;
         }
 
+        const message = (await getBookmarks()).find(
+          (bookmark) =>
+            bookmark.save_data.message_id === targetMessage.id &&
+            bookmark.save_data.channel_id === targetMessage.channel_id,
+        );
+
         const bookmarked = await setBookmark({
           message: targetMessage,
           save_data: {
             channel_id: targetMessage.channel_id,
             message_id: targetMessage.id,
-            saved_at: new Date().toISOString(),
+            saved_at: message?.save_data.saved_at || new Date().toISOString(),
             author_summary: "Author summary",
             channel_summary: "Chhannel summary",
             message_summary: "Message summery",
