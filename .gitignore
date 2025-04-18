@@ -1,3 +1,2 @@
 .env
-src/index.gen.ts
 deployctl.json
