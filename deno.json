@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "deploy": "deployctl deploy --config deployctl.json --prod --include=src,.env,deno.json --entrypoint src/index.ts"
+  },
+  "imports": {
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.3",
+    "discord_api_types/": "https://deno.land/x/discord_api_types@0.37.120/",
+    "fastify": "npm:fastify@^5.3.0",
+    "tweetnacl": "npm:tweetnacl@^1.0.3"
+  }
+}

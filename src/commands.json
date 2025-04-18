@@ -1,0 +1,21 @@
+[
+  {
+    "type": 1,
+    "name": "bookmarks",
+    "description": "View bookmarked messages",
+    "contexts": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "type": 3,
+    "name": "Bookmark",
+    "contexts": [
+      0,
+      1,
+      2
+    ]
+  }
+]
