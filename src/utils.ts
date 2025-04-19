@@ -33,10 +33,38 @@ export const getBookmarks = async () => {
   return bookmarksArray;
 };
 
+export const getBookmark = async (messageId: string) => {
+  const kv = await Deno.openKv();
+
+  const bookmark = await kv.get(["bookmarks", messageId]);
+  kv.close();
+
+  if (!bookmark) {
+    return null;
+  }
+
+  return bookmark.value as Bookmark;
+};
+
 export const setBookmark = async ({ message, save_data }: Bookmark) => {
   const kv = await Deno.openKv();
 
   await kv.set(["bookmarks", save_data.message_id], { message, save_data });
+  kv.close();
+
+  return true;
+};
+
+export const deleteBookmark = async (messageId: string) => {
+  const kv = await Deno.openKv();
+
+  const bookmark = await getBookmark(messageId);
+
+  if (!bookmark) {
+    return null;
+  }
+
+  await kv.delete(["bookmarks", messageId]);
   kv.close();
 
   return true;

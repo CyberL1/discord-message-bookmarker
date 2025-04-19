@@ -11,7 +11,7 @@ import {
 } from "discord_api_types/v10.ts";
 import {
   generateBookmarkMessage,
-  getBookmarks,
+  getBookmark,
   setBookmark,
 } from "../../utils.ts";
 
@@ -79,21 +79,18 @@ export default {
           } as APIInteractionResponse;
         }
 
-        const message = (await getBookmarks()).find(
-          (bookmark) =>
-            bookmark.save_data.message_id === targetMessage.id &&
-            bookmark.save_data.channel_id === targetMessage.channel_id,
-        );
+        const existingBookmark = await getBookmark(targetMessage.id);
 
         const bookmarked = await setBookmark({
           message: targetMessage,
           save_data: {
             channel_id: targetMessage.channel_id,
             message_id: targetMessage.id,
-            saved_at: message?.save_data.saved_at || new Date().toISOString(),
+            saved_at: existingBookmark?.save_data.saved_at ||
+              new Date().toISOString(),
             author_summary: "Author summary",
             channel_summary: "Chhannel summary",
-            message_summary: "Message summery",
+            message_summary: "Message summary",
             author_id: targetMessage.author.id,
             guild_id: interactionData.guild?.id || "@me",
             notes: "Notes",
