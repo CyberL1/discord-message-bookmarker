@@ -81,6 +81,16 @@ export const generateBookmarkMessage = async (
     return dateB.getTime() - dateA.getTime();
   });
 
+  if (bookmarks.length === 0) {
+    return {
+      type: InteractionResponseType.ChannelMessageWithSource,
+      data: {
+        content: "You have no bookmarks",
+        flags: 64,
+      },
+    } as APIInteractionResponse;
+  }
+
   let index = 0;
   if (interactionData.type === InteractionType.MessageComponent) {
     index = parseInt(interactionData.data.custom_id.split("-")[1]);
